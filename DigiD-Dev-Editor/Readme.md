@@ -34,4 +34,4 @@
 
 ### آن لائن استعمال کریں
 ```bash
-https://your-domain.com/urdu-editor
+https://github.com/ranag786tech-lang/DG-universe.git
