@@ -1,0 +1,205 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #050510;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+}
+
+#universe {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+#stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#central-hub {
+    position: absolute;
+    text-align: center;
+    z-index: 10;
+}
+
+.lore-heart {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.core {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #00d4ff, #0055ff);
+    border-radius: 50%;
+    box-shadow: 0 0 40px #00d4ff, 0 0 80px rgba(0, 212, 255, 0.5);
+    z-index: 2;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+.atom {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: rotateAtom 10s linear infinite;
+}
+
+@keyframes rotateAtom {
+    from { transform: rotateY(0deg) rotateX(20deg); }
+    to { transform: rotateY(360deg) rotateX(20deg); }
+}
+
+.electron {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
+
+.electron:nth-child(1) { transform: rotateX(70deg); }
+.electron:nth-child(2) { transform: rotateX(-70deg) rotateY(60deg); }
+.electron:nth-child(3) { transform: rotateX(-70deg) rotateY(-60deg); }
+
+.title {
+    font-size: 2.5em;
+    letter-spacing: 10px;
+    color: #c0c0c0;
+    text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 0.8em;
+    letter-spacing: 5px;
+    color: #00d4ff;
+    margin-top: 5px;
+}
+
+.nexus-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.node {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: rgba(192, 192, 192, 0.1);
+    border: 1px solid rgba(192, 192, 192, 0.3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+    color: #c0c0c0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.node:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+    box-shadow: 0 0 20px #00d4ff;
+    transform: scale(1.2);
+}
+
+.info-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.info-content {
+    background: rgba(10, 10, 30, 0.9);
+    border: 1px solid #00d4ff;
+    padding: 40px;
+    max-width: 600px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+}
+
+.ceremonial-text {
+    font-style: italic;
+    color: #aaa;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.technical-text {
+    color: #00d4ff;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.hidden { display: none; }
+
+.back-btn {
+    position: absolute;
+    bottom: 20px;
+    background: transparent;
+    border: 1px solid #c0c0c0;
+    color: #c0c0c0;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    letter-spacing: 2px;
+}
+
+.back-btn:hover {
+    background: #c0c0c0;
+    color: #000;
+}
+
+/* Waves effect for the Core */
+.core::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #00d4ff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: ripple 3s infinite;
+}
+
+@keyframes ripple {
+    0% { width: 60px; height: 60px; opacity: 1; }
+    100% { width: 200px; height: 200px; opacity: 0; }
+}
