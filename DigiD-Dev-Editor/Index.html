@@ -722,9 +722,15 @@
         let wordWrap = true;
         let fileName = 'untitled.txt';
         let fileContent = '';
+        let lastSavedContent = ''; // Optimization: Cache for dirty checking
+        let lastSavedFileName = ''; // Optimization: Cache for dirty checking
+        let mainProgressBar; // Optimization: Cache DOM reference
 
         // ========== INITIALIZE ACE EDITOR ==========
         window.addEventListener('load', function() {
+            // Cache DOM elements
+            mainProgressBar = document.getElementById('mainProgressBar');
+
             // Initialize Ace Editor
             editor = ace.edit('mainEditor');
             editor.setTheme('ace/theme/monokai');
@@ -1034,11 +1040,15 @@
         window.replaceAll = function() {
             const findInput = document.getElementById('findInput');
             const replaceInput = document.getElementById('replaceInput');
-            if (findInput && replaceInput) {
+            if (findInput && findInput.value && replaceInput) {
                 const content = editor.getValue();
                 const newContent = content.split(findInput.value).join(replaceInput.value);
-                editor.setValue(newContent);
-                showToast('تبدیل کر دیا گیا!');
+                if (content !== newContent) {
+                    editor.setValue(newContent);
+                    showToast('تبدیل کر دیا گیا!');
+                } else {
+                    showToast('کوئی نتیجہ نہیں ملا');
+                }
             }
         };
 
@@ -1140,8 +1150,16 @@
         function saveToStorage() {
             try {
                 const content = editor.getValue();
+
+                // Optimization: Dirty check to avoid unnecessary localStorage writes
+                // Check both content and fileName to ensure full persistence
+                if (content === lastSavedContent && fileName === lastSavedFileName) return;
+
                 localStorage.setItem('text-editor-content', content);
                 localStorage.setItem('text-editor-file', fileName);
+                lastSavedContent = content;
+                lastSavedFileName = fileName;
+
                 updateProgress(100);
             } catch (e) {
                 console.error('Storage error:', e);
@@ -1157,10 +1175,12 @@
                 if (saved) {
                     editor.setValue(saved);
                     fileContent = saved;
+                    lastSavedContent = saved;
                 }
                 
                 if (savedFile) {
                     fileName = savedFile;
+                    lastSavedFileName = savedFile;
                 }
             } catch (e) {
                 console.error('Storage error:', e);
@@ -1169,8 +1189,10 @@
 
         // ========== UPDATE PROGRESS ==========
         function updateProgress(percent) {
-            const progressBar = document.getElementById('mainProgressBar');
-            progressBar.style.width = percent + '%';
+            // Optimization: Use cached DOM reference
+            if (mainProgressBar) {
+                mainProgressBar.style.width = percent + '%';
+            }
         }
 
         // Add animation styles
