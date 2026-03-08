@@ -84,8 +84,11 @@ function animateNodes() {
 
         // Use transform translate3d instead of top/left for GPU acceleration
         // and avoid layout thrashing.
-        let scale = 1 + Math.sin(angle) * 0.2;
-
+        let scale = 1 + Math.sin(angle) * ORBITAL_SCALE_FACTOR;
+// ...
+if (node.dataset.hovered === 'true') {
+    scale *= HOVER_SCALE_MULTIPLIER;
+}
         // Add additional scale if hovered (combining CSS and JS logic)
         if (node.dataset.hovered === 'true') {
             scale *= 1.2;
