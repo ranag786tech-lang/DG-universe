@@ -86,9 +86,8 @@ function animateNodes() {
         // and avoid layout thrashing.
         let scale = 1 + Math.sin(angle) * ORBITAL_SCALE_FACTOR;
 // ...
-if (node.dataset.hovered === 'true') {
-    scale *= HOVER_SCALE_MULTIPLIER;
-}
+        const ORBITAL_SCALE_FACTOR = 0.2;
+const HOVER_SCALE_MULTIPLIER = 1.2;
         // Add additional scale if hovered (combining CSS and JS logic)
         if (node.dataset.hovered === 'true') {
             scale *= 1.2;
