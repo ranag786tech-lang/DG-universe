@@ -1,4 +1,5 @@
 const features = [];
+let nodes = []; // Cache for DOM nodes to avoid repeated querySelectorAll
 let rotationAngle = 0;
 
 async function init() {
@@ -54,12 +55,20 @@ function createNodes() {
         node.innerText = feature.key;
         node.id = 'node-' + feature.key;
         node.onclick = () => showInfo(feature);
+
+        // Use data attributes to track hover state instead of CSS transform
+        // to avoid conflicts with JS-driven scaling
+        node.onmouseenter = () => node.dataset.hovered = 'true';
+        node.onmouseleave = () => node.dataset.hovered = 'false';
+
         grid.appendChild(node);
     });
+
+    // Cache the nodes once created
+    nodes = Array.from(document.querySelectorAll('.node'));
 }
 
 function animateNodes() {
-    const nodes = document.querySelectorAll('.node');
     if (!nodes.length || !features.length) {
         requestAnimationFrame(animateNodes);
         return;
@@ -73,12 +82,16 @@ function animateNodes() {
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
 
-        node.style.left = `calc(50% + ${x}px - 20px)`;
-        node.style.top = `calc(50% + ${y}px - 20px)`;
+        // Use transform translate3d instead of top/left for GPU acceleration
+        // and avoid layout thrashing.
+        let scale = 1 + Math.sin(angle) * 0.2;
 
-        // Slight perspective scaling
-        const scale = 1 + Math.sin(angle) * 0.2;
-        node.style.transform = `scale(${scale})`;
+        // Add additional scale if hovered (combining CSS and JS logic)
+        if (node.dataset.hovered === 'true') {
+            scale *= 1.2;
+        }
+
+        node.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
         node.style.zIndex = Math.round(scale * 10);
         node.style.opacity = 0.5 + (scale - 0.8);
     });
