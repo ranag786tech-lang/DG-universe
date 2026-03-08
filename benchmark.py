@@ -20,7 +20,7 @@ async def run_benchmark():
 
             # Set editor content
             # Using JSON.stringify to safely pass large string
-            await page.evaluate(f"editor.setValue(JSON.parse({repr(os.json.dumps(large_text))}))")
+            await page.evaluate("text => editor.setValue(text)", large_text)
 
             # Measure saveToStorage
             start_time = time.time()
