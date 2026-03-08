@@ -110,6 +110,10 @@ body, html {
     position: absolute;
     width: 40px;
     height: 40px;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -20px;
     background: rgba(192, 192, 192, 0.1);
     border: 1px solid rgba(192, 192, 192, 0.3);
     border-radius: 50%;
@@ -117,17 +121,18 @@ body, html {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    /* Only transition colors and shadows, not transform or position to avoid jank in JS loop */
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
     font-weight: bold;
     color: #c0c0c0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    will-change: transform, opacity;
 }
 
 .node:hover {
     background: rgba(0, 212, 255, 0.2);
     border-color: #00d4ff;
     box-shadow: 0 0 20px #00d4ff;
-    transform: scale(1.2);
 }
 
 .info-panel {
